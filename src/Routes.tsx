@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
-import { TemplateScreen } from '@/screens'
+import { ClientDashboard, AdminDashboard, AdminSignin } from '@/screens'
 
 const AppRoutes = () => {
   return (
@@ -8,12 +8,15 @@ const AppRoutes = () => {
       <Routes>
         {/* =============================================================== */}
 
-        <Route path="/" element={<Navigate to="/template" />} />
-        <Route path="*" element={<Navigate to="/template" />} />
+        {/* <Route path="/" element={<Navigate to="/" />} /> */}
+        <Route path="*" element={<Navigate to="/" />} />
 
         {/* =============================================================== */}
 
-        <Route path="/template" element={<TemplateScreen />} />
+        <Route path="/" element={<ClientDashboard />} />
+
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/entrar" element={<AdminSignin />} />
 
         {/* =============================================================== */}
       </Routes>

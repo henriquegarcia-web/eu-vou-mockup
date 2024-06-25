@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Screen } from '@/utils/styles/globals'
 
-export const TemplateScreen = styled(Screen)`
+export const ClientDashboard = styled(Screen)`
   display: flex;
 `
 

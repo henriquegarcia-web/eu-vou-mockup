@@ -1,3 +1,5 @@
-import TemplateScreen from './TemplateScreen'
+import AdminSignin from './AdminSignin'
+import AdminDashboard from './AdminDashboard'
+import ClientDashboard from './ClientDashboard'
 
-export { TemplateScreen }
+export { AdminSignin, AdminDashboard, ClientDashboard }

@@ -1,3 +1,3 @@
-import TemplateComponent from './TemplateComponent'
+import View from './View'
 
-export { TemplateComponent }
+export { View }

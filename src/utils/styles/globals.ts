@@ -7,7 +7,10 @@ export const responsiveDesktop = '1000px'
 export const responsiveTablet = '760px'
 export const responsiveMobile = '500px'
 
-export const clientHeaderHeight = '70px'
+export const adminHeader = '50px'
+export const adminMenu = '200px'
+export const pagePadding = '15px'
+export const adminViewHeader = '50px'
 
 const GlobalStyle = createGlobalStyle`
   :root {
