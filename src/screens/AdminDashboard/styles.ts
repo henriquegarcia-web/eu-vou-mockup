@@ -13,6 +13,7 @@ export const AdminDashboard = styled(Screen)`
 
 export const AdminDashboardHeader = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: ${adminHeader};
@@ -30,6 +31,10 @@ export const AdminDashboardLogo = styled.h1`
   font-size: 20px;
   line-height: 20px;
   font-weight: 800;
+`
+
+export const AdminDashboardSettings = styled.div`
+  display: flex;
 `
 
 export const AdminDashboardContent = styled.div`

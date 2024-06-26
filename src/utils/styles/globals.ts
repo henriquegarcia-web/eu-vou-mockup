@@ -65,3 +65,17 @@ export const Screen = styled.div`
   height: fit-content;
   min-height: 100vh;
 `
+
+export interface IEditorSelection {
+  width: string
+  height: string
+  top: string
+  right: string
+  bottom: string
+  left: string
+  isCircle: boolean
+  borderTopLeft: string
+  borderTopRight: string
+  borderBottomRight: string
+  borderBottomLeft: string
+}

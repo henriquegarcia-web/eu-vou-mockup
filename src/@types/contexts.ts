@@ -1,8 +1,8 @@
-/**
- * Contexto Template
- * @property {string} isTemplate - Estado de tamplate.
- */
+import { IAdminData, IUserData } from '@/@types/admin'
 
-export interface ITemplateContextData {
-  isTemplate: boolean
+export interface IAdminContextData {
+  isAdminLogged: boolean
+  userData: IUserData | null
+  adminData: IAdminData | null
+  handleLogout: () => void
 }

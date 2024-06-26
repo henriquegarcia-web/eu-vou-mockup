@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Screen } from '@/utils/styles/globals'
+import { Form } from 'antd'
 
 export const AdminSignin = styled(Screen)`
   display: flex;
@@ -29,7 +30,7 @@ export const AdminSigninTitle = styled.div`
   }
 `
 
-export const AdminSigninForm = styled.form`
+export const AdminSigninForm = styled(Form)`
   display: flex;
   flex-direction: column;
   align-items: flex-end;

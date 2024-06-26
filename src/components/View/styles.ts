@@ -4,7 +4,7 @@ import { pagePadding, adminViewHeader } from '@/utils/styles/globals'
 export const View = styled.div`
   display: flex;
   flex-direction: column;
-  row-gap: ${pagePadding};
+  row-gap: 30px;
   width: 100%;
   height: 100%;
   padding: ${pagePadding};
@@ -49,7 +49,5 @@ export const ViewHeaderLegend = styled.p`
 
 export const ViewContent = styled.div`
   display: flex;
-  height: calc(100% - ${adminViewHeader});
-
-  border: 1px solid blue;
+  height: calc(100% - ${adminViewHeader} - 30px);
 `

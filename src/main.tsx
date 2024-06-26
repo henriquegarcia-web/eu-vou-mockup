@@ -4,13 +4,13 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import GlobalStyle from './utils/styles/globals.ts'
 
-import { TemplateProvider } from '@/contexts/TemplateProvider.tsx'
+import { AdminProvider } from '@/contexts/AdminProvider.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <TemplateProvider>
+    <AdminProvider>
       <GlobalStyle />
       <App />
-    </TemplateProvider>
+    </AdminProvider>
   </React.StrictMode>
 )
