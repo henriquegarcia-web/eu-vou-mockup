@@ -30,8 +30,12 @@ const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   const [adminData, setAdminData] = useState<IAdminData | null>(null)
 
   const isAdminLogged = useMemo(() => {
-    return !userId
+    return !!userId
   }, [userId])
+
+  useEffect(() => {
+    console.log(isAdminLogged)
+  }, [isAdminLogged])
 
   // -----------------------------------------------------------------
 

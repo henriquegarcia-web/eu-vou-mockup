@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import * as S from './styles'
 import { FaPenToSquare } from 'react-icons/fa6'
@@ -29,17 +29,17 @@ import { handleUpdateEditorSettings } from '@/firebase/auth'
 import { beforeUpload, onPreview } from '@/utils/functions/imageUpload'
 
 const editorSettingsSchema = Yup.object().shape({
-  width: Yup.string().required(),
-  height: Yup.string().required(),
-  top: Yup.string().required(),
-  right: Yup.string().required(),
-  bottom: Yup.string().required(),
-  left: Yup.string().required(),
+  width: Yup.number().required().min(0),
+  height: Yup.number().required().min(0),
+  top: Yup.number().required().min(0),
+  right: Yup.number().required().min(0),
+  bottom: Yup.number().required().min(0),
+  left: Yup.number().required().min(0),
   isCircle: Yup.boolean().required(),
-  borderTopLeft: Yup.string().required(),
-  borderTopRight: Yup.string().required(),
-  borderBottomRight: Yup.string().required(),
-  borderBottomLeft: Yup.string().required()
+  borderTopLeft: Yup.number().required().min(0),
+  borderTopRight: Yup.number().required().min(0),
+  borderBottomRight: Yup.number().required().min(0),
+  borderBottomLeft: Yup.number().required().min(0)
 })
 
 interface IEditor {}
@@ -47,9 +47,7 @@ interface IEditor {}
 const Editor = ({}: IEditor) => {
   const { adminData } = useAdmin()
 
-  const [checked, setChecked] = useState(true)
-
-  const [updatingCompany, setUpdatingCompany] = useState(false)
+  const [updatingEditor, setUpdatingEditor] = useState(false)
 
   const [tempCompanyImage, setTempCompanyImage] = useState<string>('')
   const [companyImageUploaded, setTempCompanyImageUploaded] = useState<RcFile>()
@@ -58,19 +56,6 @@ const Editor = ({}: IEditor) => {
   const [saveButtonEnable, setSaveButtonEnable] = useState(false)
 
   const editorWrapperRef = useRef(null)
-
-  const toggleChecked = () => {
-    setChecked(!checked)
-  }
-
-  const submitEdition = (e: any) => {
-    e.preventDefault()
-  }
-
-  const onChange: CheckboxProps['onChange'] = (e) => {
-    console.log('checked = ', e.target.checked)
-    setChecked(e.target.checked)
-  }
 
   // ========================================================= START IMAGE CONTROL
 
@@ -95,17 +80,40 @@ const Editor = ({}: IEditor) => {
 
   // ========================================================= END IMAGE CONTROL
 
-  const { control, handleSubmit, reset, setValue, getValues, formState } =
-    useForm({
-      mode: 'all',
-      resolver: yupResolver(editorSettingsSchema)
-    })
+  const {
+    control,
+    handleSubmit,
+    reset,
+    setValue,
+    getValues,
+    formState,
+    watch
+  } = useForm({
+    mode: 'all',
+    resolver: yupResolver(editorSettingsSchema),
+    defaultValues: {
+      width: 0,
+      height: 0,
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      isCircle: false,
+      borderTopLeft: 0,
+      borderTopRight: 0,
+      borderBottomRight: 0,
+      borderBottomLeft: 0
+    }
+  })
 
-  const { errors } = formState
+  const { isValid } = formState
 
-  const handleUpdate = async (data: IEditorSettingsForm) => {
+  const handleUpdate = async () => {
+    const data = getValues()
+    console.log('executou aqui 1', data)
+
     try {
-      setUpdatingCompany(true)
+      setUpdatingEditor(true)
 
       let postUrl = ''
 
@@ -151,35 +159,86 @@ const Editor = ({}: IEditor) => {
       setCompanyImageModified(false)
       setSaveButtonEnable(false)
     } finally {
-      setUpdatingCompany(false)
+      setUpdatingEditor(false)
     }
   }
 
   useEffect(() => {
-    if (adminData) {
-      setTempCompanyImage(adminData.editor.image || '')
+    console.log(adminData)
+  }, [adminData])
 
-      // setValue('companyName', companyInfo?.companyName || '')
-      // setValue('companyId', companyInfo?.companyId || '')
-      // setValue('companyDescription', companyInfo?.companyDescription || '')
+  useEffect(() => {
+    if (adminData) {
+      const editorData = adminData?.editor
+
+      setTempCompanyImage(editorData.image || '')
+
+      setValue('width', editorData?.size.width || 0)
+      setValue('height', editorData?.size.height || 0)
+      setValue('top', editorData?.position.top || 0)
+      setValue('right', editorData?.position.right || 0)
+      setValue('bottom', editorData?.position.bottom || 0)
+      setValue('left', editorData?.position.left || 0)
+      setValue('isCircle', editorData?.border.isCircle || false)
+      setValue('borderTopLeft', editorData?.border.topLeft || 0)
+      setValue('borderTopRight', editorData?.border.topRight || 0)
+      setValue('borderBottomRight', editorData?.border.bottomRight || 0)
+      setValue('borderBottomLeft', editorData?.border.bottomLeft || 0)
     }
   }, [adminData, setValue])
 
-  // const handleFieldChange = () => {
-  //   const formData = getValues()
-  //   const companyInfo = adminData?.adminCompanyInfo
+  const handleFieldChange = useCallback(() => {
+    const formData = getValues()
 
-  //   const companyNameChanged = formData.companyName !== companyInfo?.companyName
-  //   const companyIdChanged = formData.companyId !== companyInfo?.companyId
-  //   const companyDescriptionChanged =
-  //     formData.companyDescription !== companyInfo?.companyDescription
+    const editorData = adminData?.editor
 
-  //   setSaveButtonEnable(
-  //     companyNameChanged || companyIdChanged || companyDescriptionChanged
-  //   )
-  // }
+    const width = formData.width !== editorData?.size.width
+    const height = formData.height !== editorData?.size.height
+    const top = formData.top !== editorData?.position.top
+    const right = formData.right !== editorData?.position.right
+    const bottom = formData.bottom !== editorData?.position.bottom
+    const left = formData.left !== editorData?.position.left
+    const isCircle = formData.isCircle !== editorData?.border.isCircle
+    const borderTopLeft = formData.borderTopLeft !== editorData?.border.topLeft
+    const borderTopRight =
+      formData.borderTopRight !== editorData?.border.topRight
+    const borderBottomRight =
+      formData.borderBottomRight !== editorData?.border.bottomRight
+    const borderBottomLeft =
+      formData.borderBottomLeft !== editorData?.border.bottomLeft
 
-  const formData = getValues()
+    setSaveButtonEnable(
+      width ||
+        height ||
+        top ||
+        right ||
+        bottom ||
+        left ||
+        isCircle ||
+        borderTopLeft ||
+        borderTopRight ||
+        borderBottomRight ||
+        borderBottomLeft
+    )
+  }, [])
+
+  const watchedValues = watch([
+    'width',
+    'height',
+    'top',
+    'right',
+    'bottom',
+    'left',
+    'isCircle',
+    'borderTopLeft',
+    'borderTopRight',
+    'borderBottomRight',
+    'borderBottomLeft'
+  ])
+
+  const formData = useMemo(() => {
+    return getValues()
+  }, [watchedValues])
 
   useEffect(() => {
     if (companyImageModified) {
@@ -199,7 +258,7 @@ const Editor = ({}: IEditor) => {
         <S.EditorMenu>
           <S.EditorMenuForm
             layout="vertical"
-            onFinish={handleSubmit(submitEdition)}
+            onFinish={() => handleSubmit(handleUpdate)}
           >
             <S.FormWrapper
               ref={editorWrapperRef}
@@ -249,10 +308,14 @@ const Editor = ({}: IEditor) => {
                     rules={{ required: 'Este campo é obrigatório' }}
                     render={({ field }) => (
                       <Input
-                        {...field}
                         addonBefore="Largura"
                         suffix="px"
                         defaultValue={0}
+                        value={field.value}
+                        onChange={(e) => {
+                          field.onChange(e.target.value)
+                          handleFieldChange()
+                        }}
                       />
                     )}
                   />
@@ -262,10 +325,14 @@ const Editor = ({}: IEditor) => {
                     rules={{ required: 'Este campo é obrigatório' }}
                     render={({ field }) => (
                       <Input
-                        {...field}
                         addonBefore="Altura"
                         suffix="px"
                         defaultValue={0}
+                        value={field.value}
+                        onChange={(e) => {
+                          field.onChange(e.target.value)
+                          handleFieldChange()
+                        }}
                       />
                     )}
                   />
@@ -275,29 +342,39 @@ const Editor = ({}: IEditor) => {
                   <S.FormInputsWrapperLabel>
                     Posicionamento
                   </S.FormInputsWrapperLabel>
-                  <Controller
+                  {/* <Controller
                     name="top"
                     control={control}
                     rules={{ required: 'Este campo é obrigatório' }}
                     render={({ field }) => (
                       <Input
-                        {...field}
+                        type="number"
                         addonBefore="Cima"
                         suffix="px"
                         defaultValue={0}
+                        value={field.value}
+                        onChange={(e) => {
+                          field.onChange(e.target.value)
+                          handleFieldChange()
+                        }}
                       />
                     )}
-                  />
+                  /> */}
                   <Controller
                     name="right"
                     control={control}
                     rules={{ required: 'Este campo é obrigatório' }}
                     render={({ field }) => (
                       <Input
-                        {...field}
+                        type="number"
                         addonBefore="Direita"
                         suffix="px"
                         defaultValue={0}
+                        value={field.value}
+                        onChange={(e) => {
+                          field.onChange(e.target.value)
+                          handleFieldChange()
+                        }}
                       />
                     )}
                   />
@@ -307,26 +384,36 @@ const Editor = ({}: IEditor) => {
                     rules={{ required: 'Este campo é obrigatório' }}
                     render={({ field }) => (
                       <Input
-                        {...field}
+                        type="number"
                         addonBefore="Baixo"
                         suffix="px"
                         defaultValue={0}
+                        value={field.value}
+                        onChange={(e) => {
+                          field.onChange(e.target.value)
+                          handleFieldChange()
+                        }}
                       />
                     )}
                   />
-                  <Controller
+                  {/* <Controller
                     name="left"
                     control={control}
                     rules={{ required: 'Este campo é obrigatório' }}
                     render={({ field }) => (
                       <Input
-                        {...field}
+                        type="number"
                         addonBefore="Esquerda"
                         suffix="px"
                         defaultValue={0}
+                        value={field.value}
+                        onChange={(e) => {
+                          field.onChange(e.target.value)
+                          handleFieldChange()
+                        }}
                       />
                     )}
-                  />
+                  /> */}
                 </S.FormInputsWrapper>
 
                 <S.FormInputsWrapper>
@@ -338,7 +425,10 @@ const Editor = ({}: IEditor) => {
                     render={({ field }) => (
                       <Checkbox
                         checked={field.value}
-                        onChange={(e) => field.onChange(e.target.checked)}
+                        onChange={(e) => {
+                          field.onChange(e.target.checked)
+                          handleFieldChange()
+                        }}
                       >
                         Círculo
                       </Checkbox>
@@ -351,10 +441,15 @@ const Editor = ({}: IEditor) => {
                     rules={{ required: 'Este campo é obrigatório' }}
                     render={({ field }) => (
                       <Input
-                        {...field}
+                        type="number"
                         addonBefore="Borda Cima-Esquerda"
                         suffix="px"
                         defaultValue={0}
+                        value={field.value}
+                        onChange={(e) => {
+                          field.onChange(e.target.value)
+                          handleFieldChange()
+                        }}
                       />
                     )}
                   />
@@ -364,10 +459,15 @@ const Editor = ({}: IEditor) => {
                     rules={{ required: 'Este campo é obrigatório' }}
                     render={({ field }) => (
                       <Input
-                        {...field}
+                        type="number"
                         addonBefore="Borda Cima-Direita"
                         suffix="px"
                         defaultValue={0}
+                        value={field.value}
+                        onChange={(e) => {
+                          field.onChange(e.target.value)
+                          handleFieldChange()
+                        }}
                       />
                     )}
                   />
@@ -377,10 +477,15 @@ const Editor = ({}: IEditor) => {
                     rules={{ required: 'Este campo é obrigatório' }}
                     render={({ field }) => (
                       <Input
-                        {...field}
+                        type="number"
                         addonBefore="Borda Baixo-Direita"
                         suffix="px"
                         defaultValue={0}
+                        value={field.value}
+                        onChange={(e) => {
+                          field.onChange(e.target.value)
+                          handleFieldChange()
+                        }}
                       />
                     )}
                   />
@@ -390,10 +495,15 @@ const Editor = ({}: IEditor) => {
                     rules={{ required: 'Este campo é obrigatório' }}
                     render={({ field }) => (
                       <Input
-                        {...field}
+                        type="number"
                         addonBefore="Borda Baixo-Esquerda"
                         suffix="px"
                         defaultValue={0}
+                        value={field.value}
+                        onChange={(e) => {
+                          field.onChange(e.target.value)
+                          handleFieldChange()
+                        }}
                       />
                     )}
                   />
@@ -401,7 +511,14 @@ const Editor = ({}: IEditor) => {
               </S.FormInputs>
             </S.FormWrapper>
             <S.FormSubmit>
-              <Button disabled type="primary" htmlType="submit">
+              <Button
+                disabled={!saveButtonEnable && isValid}
+                loading={updatingEditor}
+                type="primary"
+                onClick={() => {
+                  handleUpdate()
+                }}
+              >
                 Publicar
               </Button>
             </S.FormSubmit>
@@ -409,7 +526,7 @@ const Editor = ({}: IEditor) => {
         </S.EditorMenu>
         <S.EditorView>
           <S.EditorViewImageWrapper>
-            <img src="/postMockup.jpeg" alt="" />
+            <img src={tempCompanyImage} alt="" />
             <S.EditorViewImageSelection
               width={formData.width}
               height={formData.height}
@@ -417,11 +534,11 @@ const Editor = ({}: IEditor) => {
               right={formData.right}
               bottom={formData.bottom}
               left={formData.left}
-              isCircle={formData.isCircle}
-              borderTopLeft={formData.borderTopLeft}
-              borderTopRight={formData.borderTopRight}
-              borderBottomRight={formData.borderBottomRight}
-              borderBottomLeft={formData.borderBottomLeft}
+              iscircle={formData.isCircle ? 1 : 0}
+              bordertopleft={formData.borderTopLeft}
+              bordertopright={formData.borderTopRight}
+              borderbottomright={formData.borderBottomRight}
+              borderbottomleft={formData.borderBottomLeft}
             />
           </S.EditorViewImageWrapper>
         </S.EditorView>

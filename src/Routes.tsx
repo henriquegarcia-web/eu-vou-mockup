@@ -22,14 +22,7 @@ const AppRoutes = () => {
         {/* <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/entrar" element={<AdminSignin />} /> */}
 
-        <Route
-          path="/admin/entrar"
-          element={
-            <PublicRoute isAuthenticated={isAdminLogged}>
-              <AdminSignin />
-            </PublicRoute>
-          }
-        />
+        <Route path="/admin/entrar" element={<AdminSignin />} />
 
         <Route
           path="/admin"

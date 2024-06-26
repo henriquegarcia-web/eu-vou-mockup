@@ -101,7 +101,7 @@ const handleGetAdminData = (
     return
   }
 
-  const adminsRef = firebase.database().ref('adminAccounts/' + user.uid)
+  const adminsRef = firebase.database().ref('adminSettings/')
 
   const listener = (snapshot: any) => {
     try {
@@ -181,26 +181,22 @@ const handleUpdateEditorSettings = async (
     if (!user) return false
 
     const userDataRef = firebase.database().ref(`adminSettings/`)
-    const currentDataSnapshot = await userDataRef.get()
-    const currentData = currentDataSnapshot.val() || {}
-
-    currentData.push({
-      ...currentData,
+    await userDataRef.set({
       editor: editorData
     })
 
-    await userDataRef.set(currentData)
-
     message.open({
       type: 'success',
-      content: 'Dados da empresa cadastrados com sucesso.'
+      content: 'Dados do editor salvos com sucesso.'
     })
 
     return true
   } catch (error) {
+    console.error(error)
+
     message.open({
       type: 'error',
-      content: 'Falha ao salvar informações básicas da empresa.'
+      content: 'Falha ao salvar dados do editor.'
     })
 
     return false

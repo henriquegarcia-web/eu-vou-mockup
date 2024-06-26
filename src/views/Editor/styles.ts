@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Form } from 'antd'
 import { IEditorSelection } from '@/utils/styles/globals'
 
@@ -99,28 +99,28 @@ export const EditorViewImageWrapper = styled.div`
 export const EditorViewImageSelection = styled.div<IEditorSelection>`
   position: absolute;
   display: flex;
-  /* right: 38px;
-  bottom: 44px;
-  display: flex;
-  width: 238px;
-  height: 344px;
-  border-radius: 35px 35px 4px 4px;*/
 
   right: ${({ right }) => `${right}px`};
-  left: ${({ left }) => `${left}px`};
-  top: ${({ top }) => `${top}px`};
   bottom: ${({ bottom }) => `${bottom}px`};
+  /* left: ${({ left }) => `${left}px`};
+  top: ${({ top }) => `${top}px`}; */
 
   width: ${({ width }) => `${width}px`};
   height: ${({ height }) => `${height}px`};
 
-  border-top-left-radius: ${({ borderTopLeft }) => `${borderTopLeft}px`};
-  border-top-right-radius: ${({ borderTopRight }) => `${borderTopRight}px`};
-  border-bottom-right-radius: ${({ borderBottomRight }) =>
-    `${borderBottomRight}px`};
-  border-bottom-left-radius: ${({ borderBottomLeft }) =>
-    `${borderBottomLeft}px`};
+  border-top-left-radius: ${({ bordertopleft }) => `${bordertopleft}px`};
+  border-top-right-radius: ${({ bordertopright }) => `${bordertopright}px`};
+  border-bottom-right-radius: ${({ borderbottomright }) =>
+    `${borderbottomright}px`};
+  border-bottom-left-radius: ${({ borderbottomleft }) =>
+    `${borderbottomleft}px`};
 
   border: 4px solid rgba(3, 223, 252, 1);
   background-color: rgba(3, 223, 252, 0.4);
+
+  ${({ iscircle }) =>
+    iscircle &&
+    css`
+      border-radius: 100%;
+    `}
 `

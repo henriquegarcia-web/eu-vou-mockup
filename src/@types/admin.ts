@@ -12,36 +12,36 @@ export interface ISigninUser {
 export interface IEditorSettings {
   image: string
   size: {
-    width: string
-    height: string
+    width: number
+    height: number
   }
   position: {
-    top: string
-    right: string
-    bottom: string
-    left: string
+    top: number
+    right: number
+    bottom: number
+    left: number
   }
   border: {
     isCircle: boolean
-    topLeft: string
-    topRight: string
-    bottomRight: string
-    bottomLeft: string
+    topLeft: number
+    topRight: number
+    bottomRight: number
+    bottomLeft: number
   }
 }
 
 export interface IEditorSettingsForm {
-  width: string
-  height: string
-  top: string
-  right: string
-  bottom: string
-  left: string
+  width: number
+  height: number
+  top: number
+  right: number
+  bottom: number
+  left: number
   isCircle: boolean
-  borderTopLeft: string
-  borderTopRight: string
-  borderBottomRight: string
-  borderBottomLeft: string
+  borderTopLeft: number
+  borderTopRight: number
+  borderBottomRight: number
+  borderBottomLeft: number
 }
 
 export interface IAdminData {

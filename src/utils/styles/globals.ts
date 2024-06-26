@@ -67,15 +67,15 @@ export const Screen = styled.div`
 `
 
 export interface IEditorSelection {
-  width: string
-  height: string
-  top: string
-  right: string
-  bottom: string
-  left: string
-  isCircle: boolean
-  borderTopLeft: string
-  borderTopRight: string
-  borderBottomRight: string
-  borderBottomLeft: string
+  width: number
+  height: number
+  top: number
+  right: number
+  bottom: number
+  left: number
+  iscircle: number
+  bordertopleft: number
+  bordertopright: number
+  borderbottomright: number
+  borderbottomleft: number
 }

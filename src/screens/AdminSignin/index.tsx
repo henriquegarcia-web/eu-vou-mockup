@@ -6,6 +6,7 @@ import * as S from './styles'
 
 import { Button, Input } from 'antd'
 
+import { useAdmin } from '@/contexts/AdminProvider'
 import { handleSigninAdmin } from '@/firebase/auth'
 
 interface ISigninForm {
@@ -17,6 +18,7 @@ interface IAdminSignin {}
 
 const AdminSignin = ({}: IAdminSignin) => {
   const navigate = useNavigate()
+  const { isAdminLogged } = useAdmin()
 
   const [signinIsLoading, setSigninIsLoading] = useState(false)
 
@@ -36,7 +38,7 @@ const AdminSignin = ({}: IAdminSignin) => {
 
     if (signupAdminResponse) {
       reset()
-      navigate('/admin/estabelecimento')
+      navigate('/admin')
     }
   }
 
@@ -48,7 +50,7 @@ const AdminSignin = ({}: IAdminSignin) => {
         </S.AdminSigninTitle>
         <S.AdminSigninForm
           layout="vertical"
-          onFinish={handleSubmit(handleSignin)}
+          onFinish={() => handleSubmit(handleSignin)}
         >
           <Controller
             name="adminEmail"
@@ -64,11 +66,17 @@ const AdminSignin = ({}: IAdminSignin) => {
               <Input.Password {...field} placeholder="Senha" />
             )}
           />
+          {isAdminLogged && (
+            <S.AdminSigninFormAlert>Você já está logado</S.AdminSigninFormAlert>
+          )}
           <Button
             type="primary"
-            htmlType="submit"
+            htmlType={isAdminLogged ? 'button' : 'submit'}
             loading={signinIsLoading}
-            disabled={!isValid}
+            disabled={!isValid && !isAdminLogged}
+            onClick={() => {
+              isAdminLogged && navigate('/admin')
+            }}
           >
             Entrar
           </Button>

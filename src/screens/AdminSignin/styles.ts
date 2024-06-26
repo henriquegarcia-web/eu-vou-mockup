@@ -36,3 +36,14 @@ export const AdminSigninForm = styled(Form)`
   align-items: flex-end;
   row-gap: 5px;
 `
+
+export const AdminSigninFormAlert = styled.div`
+  display: flex;
+  margin: 10px 0 5px 0;
+
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: 500;
+
+  color: rgba(0, 0, 0, 0.8);
+`
