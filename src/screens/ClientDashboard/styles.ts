@@ -3,26 +3,92 @@ import { IEditorSelection, Screen } from '@/utils/styles/globals'
 
 export const ClientDashboard = styled(Screen)`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  row-gap: 50px;
+
+  background-repeat: no-repeat;
+  background-image: url(https://xlabmeetup.com.br/wp-content/uploads/2023/12/bg-header.jpg);
+  background-position: center;
+  background-size: cover;
+`
+
+export const ClientDashboardHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 70px;
+  padding: 0 20px;
+`
+
+export const ClientDashboardHeaderWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+
+  img {
+    height: 70%;
+  }
+
+  ul {
+    display: flex;
+    column-gap: 20px;
+
+    li {
+      list-style: none;
+
+      a {
+        font-size: 13px;
+        line-height: 13px;
+        font-weight: 500;
+
+        color: white;
+      }
+    }
+  }
 `
 
 export const ClientDashboardWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  row-gap: 20px;
+  align-items: center;
+  row-gap: 30px;
+  width: 100%;
+  max-width: 700px;
+`
+
+export const ClientDashboardHeadline = styled.h2`
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  text-align: center;
+
+  color: white;
+`
+
+export const ClientDashboardLabel = styled.h3`
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  text-align: center;
+
+  color: white;
 `
 
 export const ClientDashboardPost = styled.div`
   position: relative;
   display: flex;
-  height: 100%;
-  max-height: 500px;
+  width: fit-content;
+  height: fit-content;
 
   img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 320px;
+    height: 320px;
   }
 `
 
@@ -39,15 +105,24 @@ export const ClientDashboardPostLoading = styled.div`
 export const ClientDashboardPostSelection = styled.div<IEditorSelection>`
   position: absolute;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  row-gap: 15px;
   cursor: pointer;
   transition: 0.3s;
+  padding: 0 10px;
 
-  font-size: 16px;
-  line-height: 16px;
-  font-weight: 800;
-  color: rgba(0, 0, 0, 0.8);
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.9);
+
+  svg {
+    font-size: 40px;
+    color: rgba(0, 0, 0, 0.9);
+  }
 
   backdrop-filter: blur(5px);
 
@@ -66,8 +141,8 @@ export const ClientDashboardPostSelection = styled.div<IEditorSelection>`
   border-bottom-left-radius: ${({ borderbottomleft }) =>
     `${borderbottomleft}px`};
 
-  border: 4px solid rgba(3, 223, 252, 1);
-  background-color: rgba(3, 223, 252, 0.4);
+  border: 1px solid rgba(255, 255, 255, 1);
+  background-color: rgba(255, 255, 255, 0.4);
 
   &:hover {
     backdrop-filter: blur(8px);
@@ -83,4 +158,44 @@ export const ClientDashboardPostSelection = styled.div<IEditorSelection>`
 export const ClientDashboardExport = styled.div`
   display: flex;
   justify-content: flex-end;
+  column-gap: 12px;
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 5px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+
+    svg {
+      font-size: 20px;
+      color: white;
+    }
+
+    color: white;
+
+    &:nth-of-type(1) {
+      background-color: #e4405f;
+    }
+
+    &:nth-of-type(2) {
+      background-color: #0a66c2;
+    }
+
+    &:nth-of-type(3) {
+      background-color: #f50062;
+    }
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
 `

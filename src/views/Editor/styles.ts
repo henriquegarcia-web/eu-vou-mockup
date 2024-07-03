@@ -92,8 +92,12 @@ export const EditorView = styled.div`
 export const EditorViewImageWrapper = styled.div`
   position: relative;
   display: flex;
-  height: 100%;
-  max-height: 500px;
+  height: fit-content;
+
+  img {
+    width: 320px;
+    height: 320px;
+  }
 `
 
 export const EditorViewImageSelection = styled.div<IEditorSelection>`
@@ -115,7 +119,7 @@ export const EditorViewImageSelection = styled.div<IEditorSelection>`
   border-bottom-left-radius: ${({ borderbottomleft }) =>
     `${borderbottomleft}px`};
 
-  border: 4px solid rgba(3, 223, 252, 1);
+  border: 1px solid rgba(3, 223, 252, 1);
   background-color: rgba(3, 223, 252, 0.4);
 
   ${({ iscircle }) =>
