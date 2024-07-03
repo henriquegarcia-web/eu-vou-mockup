@@ -1,64 +1,75 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import * as S from './styles'
 import { TbHandClick } from 'react-icons/tb'
 import { FaInstagram, FaLinkedin } from 'react-icons/fa'
 
-import { Button } from 'antd'
-import { exportComponentAsPNG } from 'react-component-export-image'
+import ImgCrop from 'antd-img-crop'
+import { Upload } from 'antd'
+import html2canvas from 'html2canvas'
+
+import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface'
+import type { UploadChangeParam } from 'antd/es/upload'
 
 import { useAdmin } from '@/contexts/AdminProvider'
+
+import { beforeUpload, onPreview } from '@/utils/functions/imageUpload'
 
 interface IClientDashboard {}
 
 const ClientDashboard = ({}: IClientDashboard) => {
   const { adminData } = useAdmin()
 
-  const clientDashboardPostRef = useRef<HTMLDivElement>(null) // Referência para a div ClientDashboardPost
+  const [tempClientImage, setTempClientImage] = useState<string>('')
+  const [clientImageUploaded, setTempClientImageUploaded] = useState<RcFile>()
 
-  // const handleExportImage = () => {
-  //   if (clientDashboardPostRef.current) {
-  //     const postElement = clientDashboardPostRef.current
+  const clientDashboardPostRef = useRef<HTMLDivElement>(null)
 
-  //     // Usa htmlToImage para capturar a imagem da div ClientDashboardPost
-  //     // htmlToImage
-  //     //   .toPng(postElement)
-  //     //   .then(function (dataUrl) {
-  //     //     // Cria um link temporário para download da imagem
-  //     //     const link = document.createElement('a')
-  //     //     link.download = 'client_dashboard_post.png'
-  //     //     link.href = dataUrl
-  //     //     document.body.appendChild(link)
-  //     //     link.click()
-  //     //     document.body.removeChild(link)
-  //     //   })
-  //     //   .catch(function (error) {
-  //     //     console.error('Erro ao exportar imagem:', error)
-  //     //   })
-  //     htmlToImage.toPng(postElement).then(function (dataUrl) {
-  //       download(dataUrl, 'my-node.png')
-  //     })
-  //   }
-  // }
+  const handleChangeClientImage: UploadProps['onChange'] = (
+    info: UploadChangeParam<UploadFile>
+  ) => {
+    if (info.file.status !== 'uploading' && !!info.file.originFileObj) {
+      const file = info.file.originFileObj as RcFile
 
-  const handleExportImage = useCallback(() => {
-    if (clientDashboardPostRef.current === null) {
-      return
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+
+      reader.onload = () => {
+        const dataURL = reader.result
+        setTempClientImage(dataURL as string)
+        setTempClientImageUploaded(file)
+      }
     }
+  }
 
-    exportComponentAsPNG(clientDashboardPostRef)
+  const handleExportImage = useCallback(async () => {
+    if (clientDashboardPostRef.current && adminData?.editor.image) {
+      try {
+        const response = await fetch(adminData.editor.image, { mode: 'cors' })
+        const blob = await response.blob()
+        const localUrl = URL.createObjectURL(blob)
 
-    // toPng(clientDashboardPostRef.current, { cacheBust: true })
-    //   .then((dataUrl) => {
-    //     const link = document.createElement('a')
-    //     link.download = 'my-image-name.png'
-    //     link.href = dataUrl
-    //     link.click()
-    //   })
-    //   .catch((err) => {
-    //     console.log(err)
-    //   })
-  }, [clientDashboardPostRef])
+        const imgElement = clientDashboardPostRef.current.querySelector('img')
+        if (imgElement) {
+          imgElement.src = localUrl
+        }
+
+        html2canvas(clientDashboardPostRef.current, {
+          useCORS: true
+        }).then((canvas) => {
+          const dataUrl = canvas.toDataURL('image/png')
+          const link = document.createElement('a')
+          link.download = 'client-dashboard.png'
+          link.href = dataUrl
+          link.click()
+
+          URL.revokeObjectURL(localUrl)
+        })
+      } catch (err) {
+        console.error('Failed to download and export image:', err)
+      }
+    }
+  }, [clientDashboardPostRef, adminData])
 
   return (
     <S.ClientDashboard>
@@ -124,10 +135,10 @@ const ClientDashboard = ({}: IClientDashboard) => {
           com a sua imagem.
         </S.ClientDashboardHeadline>
 
-        <S.ClientDashboardPost ref={clientDashboardPostRef}>
+        <S.ClientDashboardPost ref={clientDashboardPostRef} id="print">
           {adminData && adminData.editor.image ? (
             <>
-              <img src={adminData?.editor.image} alt="" />
+              <img src={adminData?.editor.image} alt="Post Image" />
 
               <S.ClientDashboardPostSelection
                 width={adminData?.editor.size.width || 0}
@@ -142,8 +153,34 @@ const ClientDashboard = ({}: IClientDashboard) => {
                 borderbottomright={adminData?.editor.border.bottomRight || 0}
                 borderbottomleft={adminData?.editor.border.bottomLeft || 0}
               >
-                <TbHandClick />
-                Clique aqui para adicionar sua foto
+                <ImgCrop rotationSlider>
+                  <Upload
+                    name="client-image"
+                    listType="picture-card"
+                    showUploadList={false}
+                    beforeUpload={beforeUpload}
+                    onChange={handleChangeClientImage}
+                    onPreview={onPreview}
+                    className="client-image-upload"
+                  >
+                    {tempClientImage ? (
+                      <img
+                        src={tempClientImage}
+                        alt="Client Image"
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover'
+                        }}
+                      />
+                    ) : (
+                      <div className="client-image-instructions">
+                        <TbHandClick />
+                        Clique aqui para adicionar sua foto
+                      </div>
+                    )}
+                  </Upload>
+                </ImgCrop>
               </S.ClientDashboardPostSelection>
             </>
           ) : (

@@ -19,6 +19,8 @@ export const ClientDashboardHeader = styled.div`
   width: 100%;
   height: 70px;
   padding: 0 20px;
+
+  background-color: black;
 `
 
 export const ClientDashboardHeaderWrapper = styled.div`
@@ -30,7 +32,7 @@ export const ClientDashboardHeaderWrapper = styled.div`
   height: 100%;
 
   img {
-    height: 70%;
+    height: 65%;
   }
 
   ul {
@@ -105,24 +107,8 @@ export const ClientDashboardPostLoading = styled.div`
 export const ClientDashboardPostSelection = styled.div<IEditorSelection>`
   position: absolute;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  row-gap: 15px;
   cursor: pointer;
   transition: 0.3s;
-  padding: 0 10px;
-
-  font-size: 14px;
-  line-height: 18px;
-  font-weight: 600;
-  text-align: center;
-  color: rgba(0, 0, 0, 0.9);
-
-  svg {
-    font-size: 40px;
-    color: rgba(0, 0, 0, 0.9);
-  }
 
   backdrop-filter: blur(5px);
 
@@ -146,6 +132,47 @@ export const ClientDashboardPostSelection = styled.div<IEditorSelection>`
 
   &:hover {
     backdrop-filter: blur(8px);
+  }
+
+  .client-image-instructions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 15px;
+
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.9);
+
+    svg {
+      font-size: 40px;
+      color: rgba(0, 0, 0, 0.9);
+    }
+  }
+
+  .ant-upload.ant-upload-select {
+    overflow: hidden !important;
+
+    width: ${({ width }) => `${width}px`} !important;
+    height: ${({ height }) => `${height}px`} !important;
+
+    border-top-left-radius: ${({ bordertopleft }) =>
+      `${bordertopleft}px`} !important;
+    border-top-right-radius: ${({ bordertopright }) =>
+      `${bordertopright}px`} !important;
+    border-bottom-right-radius: ${({ borderbottomright }) =>
+      `${borderbottomright}px`} !important;
+    border-bottom-left-radius: ${({ borderbottomleft }) =>
+      `${borderbottomleft}px`} !important;
+
+    ${({ iscircle }) =>
+      iscircle &&
+      css`
+        border-radius: 100% !important;
+      `}
   }
 
   ${({ iscircle }) =>

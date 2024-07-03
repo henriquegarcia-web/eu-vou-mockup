@@ -110,7 +110,6 @@ const Editor = ({}: IEditor) => {
 
   const handleUpdate = async () => {
     const data = getValues()
-    console.log('executou aqui 1', data)
 
     try {
       setUpdatingEditor(true)
@@ -163,9 +162,9 @@ const Editor = ({}: IEditor) => {
     }
   }
 
-  useEffect(() => {
-    console.log(adminData)
-  }, [adminData])
+  // useEffect(() => {
+  //   console.log(adminData)
+  // }, [adminData])
 
   useEffect(() => {
     if (adminData) {
