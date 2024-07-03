@@ -15,6 +15,8 @@ export const ClientDashboard = styled(Screen)`
   background-image: url(https://xlabmeetup.com.br/wp-content/uploads/2023/12/bg-header.jpg);
   background-position: center;
   background-size: cover;
+
+  background-color: black;
 `
 
 export const ClientDashboardHeader = styled.div`

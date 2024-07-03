@@ -45,8 +45,9 @@ const AdminSignin = ({}: IAdminSignin) => {
   return (
     <S.AdminSignin>
       <S.AdminSigninWrapper>
+        <img src="/kentricos_logo.png" alt="Kentricos Logo" />
         <S.AdminSigninTitle>
-          <b>Entrar</b>
+          <b>Sistema #EuVou</b>
         </S.AdminSigninTitle>
         <S.AdminSigninForm
           layout="vertical"
