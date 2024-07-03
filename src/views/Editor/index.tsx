@@ -257,7 +257,8 @@ const Editor = ({}: IEditor) => {
         <S.EditorMenu>
           <S.EditorMenuForm
             layout="vertical"
-            onFinish={() => handleSubmit(handleUpdate)}
+            // @ts-ignore
+            onFinish={handleSubmit(handleUpdate)}
           >
             <S.FormWrapper
               ref={editorWrapperRef}

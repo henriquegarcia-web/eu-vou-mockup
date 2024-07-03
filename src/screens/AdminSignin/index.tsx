@@ -50,6 +50,7 @@ const AdminSignin = ({}: IAdminSignin) => {
         </S.AdminSigninTitle>
         <S.AdminSigninForm
           layout="vertical"
+          // @ts-ignore
           onFinish={handleSubmit(handleSignin)}
         >
           <Controller
