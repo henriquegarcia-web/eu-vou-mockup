@@ -88,7 +88,7 @@ const AdminProvider = ({ children }: { children: React.ReactNode }) => {
         unsubscribe()
       }
     }
-  }, [userId])
+  }, [])
 
   // ========================================================================
 

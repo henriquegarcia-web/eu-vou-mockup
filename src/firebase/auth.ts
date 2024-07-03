@@ -94,13 +94,6 @@ const handleGetUserData = (
 const handleGetAdminData = (
   callback: (accountData: IAdminData | null) => void
 ) => {
-  const user = firebase.auth().currentUser
-
-  if (!user) {
-    callback(null)
-    return
-  }
-
   const adminsRef = firebase.database().ref('adminSettings/')
 
   const listener = (snapshot: any) => {
@@ -114,7 +107,7 @@ const handleGetAdminData = (
     } catch (error) {
       message.open({
         type: 'error',
-        content: 'Falha ao obter dados da empresa'
+        content: 'Falha ao obter dados da publicação. Recarregue a página.'
       })
     }
   }

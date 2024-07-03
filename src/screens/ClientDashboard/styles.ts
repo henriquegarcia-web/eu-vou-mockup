@@ -1,5 +1,9 @@
 import styled, { css } from 'styled-components'
-import { IEditorSelection, Screen } from '@/utils/styles/globals'
+import {
+  IEditorSelection,
+  Screen,
+  responsiveTablet
+} from '@/utils/styles/globals'
 
 export const ClientDashboard = styled(Screen)`
   display: flex;
@@ -51,6 +55,27 @@ export const ClientDashboardHeaderWrapper = styled.div`
       }
     }
   }
+
+  span {
+    display: none;
+
+    a {
+      svg {
+        font-size: 22px;
+        color: white;
+      }
+    }
+  }
+
+  @media screen and (max-width: ${responsiveTablet}) {
+    ul {
+      display: none;
+    }
+
+    span {
+      display: flex;
+    }
+  }
 `
 
 export const ClientDashboardWrapper = styled.div`
@@ -60,22 +85,28 @@ export const ClientDashboardWrapper = styled.div`
   row-gap: 30px;
   width: 100%;
   max-width: 700px;
+  padding: 0 20px;
 `
 
 export const ClientDashboardHeadline = styled.h2`
-  font-size: 24px;
-  line-height: 32px;
-  font-weight: 300;
+  font-size: 30px;
+  line-height: 38px;
+  font-weight: 200;
   letter-spacing: 0.5px;
   text-align: center;
+  font-style: italic;
 
   color: white;
+
+  b {
+    font-weight: 600;
+  }
 `
 
 export const ClientDashboardLabel = styled.h3`
-  font-size: 16px;
+  font-size: 15px;
   line-height: 22px;
-  font-weight: 300;
+  font-weight: 200;
   letter-spacing: 0.5px;
   text-align: center;
 
@@ -97,11 +128,12 @@ export const ClientDashboardPost = styled.div`
 export const ClientDashboardPostLoading = styled.div`
   position: relative;
   display: flex;
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
+  width: 320px;
+  height: 320px;
+  border-radius: 4px;
 
-  border: 2px solid rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(255, 0, 100, 1);
+  background-color: rgba(255, 0, 100, 0.2);
 `
 
 export const ClientDashboardPostSelection = styled.div<IEditorSelection>`
@@ -188,6 +220,7 @@ export const ClientDashboardExport = styled.div`
   column-gap: 12px;
 
   button {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -208,8 +241,9 @@ export const ClientDashboardExport = styled.div`
     }
 
     color: white;
+    background-color: #f50062;
 
-    &:nth-of-type(1) {
+    /* &:nth-of-type(1) {
       background-color: #e4405f;
     }
 
@@ -219,10 +253,34 @@ export const ClientDashboardExport = styled.div`
 
     &:nth-of-type(3) {
       background-color: #f50062;
-    }
+    } */
 
     &:hover {
       opacity: 0.9;
     }
+
+    &:disabled {
+      cursor: default;
+    }
+  }
+`
+
+export const ExportButtonLock = styled.div`
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 100px;
+
+  background-color: rgb(140, 140, 140);
+
+  svg {
+    font-size: 15px !important;
+
+    color: rgb(20, 20, 20);
   }
 `

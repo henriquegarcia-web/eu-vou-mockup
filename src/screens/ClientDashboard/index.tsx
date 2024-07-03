@@ -2,7 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 import * as S from './styles'
 import { TbHandClick } from 'react-icons/tb'
-import { FaInstagram, FaLinkedin } from 'react-icons/fa'
+import { FaInstagram, FaLinkedin, FaLock } from 'react-icons/fa'
+import { TiHome } from 'react-icons/ti'
 
 import ImgCrop from 'antd-img-crop'
 import { Upload } from 'antd'
@@ -75,11 +76,17 @@ const ClientDashboard = ({}: IClientDashboard) => {
     <S.ClientDashboard>
       <S.ClientDashboardHeader>
         <S.ClientDashboardHeaderWrapper>
-          <img
-            src="http://xlabmeetup.com.br/wp-content/uploads/2024/03/logo.png"
-            alt="Experience Lab"
-            title=""
-          />
+          <a
+            href="https://xlabmeetup.com.br/#home"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="http://xlabmeetup.com.br/wp-content/uploads/2024/03/logo.png"
+              alt="Experience Lab"
+              title=""
+            />
+          </a>
           <ul>
             <li>
               <a
@@ -127,6 +134,15 @@ const ClientDashboard = ({}: IClientDashboard) => {
               </a>
             </li>
           </ul>
+          <span>
+            <a
+              href="https://xlabmeetup.com.br/#home"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <TiHome />
+            </a>
+          </span>
         </S.ClientDashboardHeaderWrapper>
       </S.ClientDashboardHeader>
       <S.ClientDashboardWrapper>
@@ -153,7 +169,12 @@ const ClientDashboard = ({}: IClientDashboard) => {
                 borderbottomright={adminData?.editor.border.bottomRight || 0}
                 borderbottomleft={adminData?.editor.border.bottomLeft || 0}
               >
-                <ImgCrop rotationSlider>
+                <ImgCrop
+                  aspect={
+                    adminData?.editor.size.width / adminData?.editor.size.height
+                  }
+                  rotationSlider
+                >
                   <Upload
                     name="client-image"
                     listType="picture-card"
@@ -189,18 +210,37 @@ const ClientDashboard = ({}: IClientDashboard) => {
         </S.ClientDashboardPost>
 
         <S.ClientDashboardLabel>
-          Clique no botão acima e escolha a sua melhor foto. Em seguida clique
-          no botão abaixo e compartilhe em suas redes.
+          Clique no botão acima e escolha a sua melhor foto.
+          <br />
+          {/* Escolha abaixo o formato de exportação da publicação. */}
+          Clique no botão abaixo para fazer o download da publicação.
         </S.ClientDashboardLabel>
 
         <S.ClientDashboardExport>
-          <button onClick={handleExportImage}>
+          {/* <button onClick={handleExportImage} disabled={!tempClientImage}>
             Compartilhar no <FaInstagram />
+            {!tempClientImage && (
+              <S.ExportButtonLock>
+                <FaLock />
+              </S.ExportButtonLock>
+            )}
           </button>
-          <button onClick={handleExportImage}>
+          <button onClick={handleExportImage} disabled={!tempClientImage}>
             Compartilhar no <FaLinkedin />
+            {!tempClientImage && (
+              <S.ExportButtonLock>
+                <FaLock />
+              </S.ExportButtonLock>
+            )}
+          </button> */}
+          <button onClick={handleExportImage} disabled={!tempClientImage}>
+            Baixar Imagem
+            {!tempClientImage && (
+              <S.ExportButtonLock>
+                <FaLock />
+              </S.ExportButtonLock>
+            )}
           </button>
-          <button onClick={handleExportImage}>Baixar Imagem</button>
         </S.ClientDashboardExport>
       </S.ClientDashboardWrapper>
     </S.ClientDashboard>
