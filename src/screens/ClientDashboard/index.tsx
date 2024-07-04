@@ -55,17 +55,28 @@ const ClientDashboard = ({}: IClientDashboard) => {
           imgElement.src = localUrl
         }
 
-        html2canvas(clientDashboardPostRef.current, {
+        const canvas = await html2canvas(clientDashboardPostRef.current, {
           useCORS: true
-        }).then((canvas) => {
+        })
+
+        if (canvas.toBlob) {
+          canvas.toBlob((blob) => {
+            const link = document.createElement('a')
+            link.download = 'EuVouPost.png'
+            link.href = URL.createObjectURL(blob)
+            link.click()
+
+            URL.revokeObjectURL(localUrl)
+          }, 'image/png')
+        } else {
           const dataUrl = canvas.toDataURL('image/png')
           const link = document.createElement('a')
-          link.download = 'client-dashboard.png'
+          link.download = 'EuVouPost.png'
           link.href = dataUrl
           link.click()
 
           URL.revokeObjectURL(localUrl)
-        })
+        }
       } catch (err) {
         console.error('Failed to download and export image:', err)
       }

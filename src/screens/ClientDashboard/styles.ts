@@ -175,8 +175,8 @@ export const ClientDashboardPostSelection = styled.div<IEditorSelection>`
     align-items: center;
     row-gap: 15px;
 
-    font-size: 14px;
-    line-height: 18px;
+    font-size: 12px;
+    line-height: 15px;
     font-weight: 600;
     text-align: center;
     color: rgba(0, 0, 0, 0.9);
