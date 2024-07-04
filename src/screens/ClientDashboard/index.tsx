@@ -44,6 +44,7 @@ const ClientDashboard = ({}: IClientDashboard) => {
   }
 
   const handleExportImage = useCallback(async () => {
+    alert('TESTE')
     if (clientDashboardPostRef.current && adminData?.editor.image) {
       try {
         const response = await fetch(adminData.editor.image, { mode: 'cors' })
