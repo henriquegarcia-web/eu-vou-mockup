@@ -61,6 +61,7 @@ const ClientDashboard = ({}: IClientDashboard) => {
 
         if (canvas.toBlob) {
           canvas.toBlob((blob) => {
+            if (!blob) return
             const link = document.createElement('a')
             link.download = 'EuVouPost.png'
             link.href = URL.createObjectURL(blob)

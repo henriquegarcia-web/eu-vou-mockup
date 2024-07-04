@@ -173,16 +173,16 @@ export const ClientDashboardPostSelection = styled.div<IEditorSelection>`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    row-gap: 15px;
+    row-gap: 5px;
 
     font-size: 12px;
-    line-height: 15px;
+    line-height: 13px;
     font-weight: 600;
     text-align: center;
     color: rgba(0, 0, 0, 0.9);
 
     svg {
-      font-size: 40px;
+      font-size: 30px;
       color: rgba(0, 0, 0, 0.9);
     }
   }
