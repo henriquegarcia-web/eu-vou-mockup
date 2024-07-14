@@ -122,8 +122,9 @@ export const ClientDashboardPost = styled.div`
   height: fit-content;
 
   img {
-    width: 320px;
-    height: 320px;
+    width: 100%;
+    max-width: 540px;
+    height: auto;
   }
 `
 
