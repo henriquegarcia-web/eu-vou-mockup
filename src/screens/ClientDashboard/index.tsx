@@ -59,6 +59,10 @@ const ClientDashboard = ({}: IClientDashboard) => {
           useCORS: true
         })
 
+        console.log('canvas', canvas)
+        console.log('imgElement', imgElement)
+        console.log('response', response)
+
         if (canvas.toBlob) {
           canvas.toBlob((blob) => {
             if (!blob) return
