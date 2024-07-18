@@ -49,20 +49,22 @@ const ClientDashboard = ({}: IClientDashboard) => {
         const response = await fetch(adminData.editor.image, { mode: 'cors' })
         const blob = await response.blob()
         const localUrl = URL.createObjectURL(blob)
-
-        const imgElement = clientDashboardPostRef.current.querySelector('img')
-        if (imgElement) {
-          imgElement.src = localUrl
-        }
-
-        const canvas = await html2canvas(clientDashboardPostRef.current, {
+  
+        // Aguardar o carregamento completo da imagem
+        await new Promise<void>((resolve) => {
+          const imgElement = clientDashboardPostRef.current!.querySelector('img')
+          if (imgElement!.complete) {
+            resolve()
+          } else {
+            imgElement!.onload = () => resolve()
+          }
+        })
+  
+        // Continuar com html2canvas depois que a imagem estiver carregada
+        const canvas = await html2canvas(clientDashboardPostRef.current!, {
           useCORS: true
         })
-
-        console.log('canvas', canvas)
-        console.log('imgElement', imgElement)
-        console.log('response', response)
-
+  
         if (canvas.toBlob) {
           canvas.toBlob((blob) => {
             if (!blob) return
@@ -70,7 +72,7 @@ const ClientDashboard = ({}: IClientDashboard) => {
             link.download = 'EuVouPost.png'
             link.href = URL.createObjectURL(blob)
             link.click()
-
+  
             URL.revokeObjectURL(localUrl)
           }, 'image/png')
         } else {
@@ -79,7 +81,7 @@ const ClientDashboard = ({}: IClientDashboard) => {
           link.download = 'EuVouPost.png'
           link.href = dataUrl
           link.click()
-
+  
           URL.revokeObjectURL(localUrl)
         }
       } catch (err) {
@@ -87,6 +89,7 @@ const ClientDashboard = ({}: IClientDashboard) => {
       }
     }
   }, [clientDashboardPostRef, adminData])
+  
 
   return (
     <S.ClientDashboard>
