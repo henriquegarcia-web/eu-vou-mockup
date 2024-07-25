@@ -95,8 +95,8 @@ export const EditorViewImageWrapper = styled.div`
   height: fit-content;
 
   img {
-    width: 320px;
-    height: 320px;
+    width: 540px;
+    height: 540px;
   }
 `
 

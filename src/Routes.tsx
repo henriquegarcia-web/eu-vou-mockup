@@ -27,7 +27,7 @@ const AppRoutes = () => {
         <Route
           path="/admin"
           element={
-            <PrivateRoute isAuthenticated={isAdminLogged}>
+            <PrivateRoute isAuthenticated={true}> 
               <AdminDashboard />
             </PrivateRoute>
           }

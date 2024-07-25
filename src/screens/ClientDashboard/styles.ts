@@ -131,8 +131,8 @@ export const ClientDashboardPost = styled.div`
 export const ClientDashboardPostLoading = styled.div`
   position: relative;
   display: flex;
-  width: 320px;
-  height: 320px;
+  width: 540px;
+  height: 540px;
   border-radius: 4px;
 
   border: 2px solid rgba(255, 0, 100, 1);
